@@ -1,6 +1,7 @@
 # Contents
-Cognito user pool diagram and related scripts
-Lambda for API gateway used as the custom identity provider
+- Cognito user pool diagram and related scripts
+
+- Lambda for API gateway used as the custom identity provider
 
 *Note that the above will be used by an instance in AWS transfer family*
 
