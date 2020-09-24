@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sftp.custom-authorizer", "src\sftp.custom-authorizer.csproj", "{F2CA93F3-5FB4-41FE-8B55-738DF642D432}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sftp.custom-authorizer.Tests", "tests\sftp.custom-authorizer.Tests.csproj", "{2A2433D9-E2C0-4464-B9EE-D49EDDEDE842}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2CA93F3-5FB4-41FE-8B55-738DF642D432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2CA93F3-5FB4-41FE-8B55-738DF642D432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2CA93F3-5FB4-41FE-8B55-738DF642D432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2CA93F3-5FB4-41FE-8B55-738DF642D432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A2433D9-E2C0-4464-B9EE-D49EDDEDE842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A2433D9-E2C0-4464-B9EE-D49EDDEDE842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A2433D9-E2C0-4464-B9EE-D49EDDEDE842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A2433D9-E2C0-4464-B9EE-D49EDDEDE842}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A1C8602-EAEC-4320-A60C-2593BEBE78A1}
+	EndGlobalSection
+EndGlobal
