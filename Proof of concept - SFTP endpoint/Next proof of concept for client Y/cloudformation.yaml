@@ -1,0 +1,118 @@
+Parameters:
+  HostedZoneId:
+    Type: String
+    Description: Route 53 Hosted Zone ID
+  TransferHostName:
+    Type: String
+    Description: Custom Hostname for the instance
+  CustomIdProviderApiUrl:
+    Type: String
+    Description: Url to the API endpoint that will authenticate the ftp user
+Resources:
+  TransferNVVPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 172.60.0.128/27
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: TRANSFER-NVIRGINIA-VPC
+  TransferNVVPCSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref TransferNVVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '21'
+          ToPort: '21'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8192 - 8200
+          ToPort: 8192 - 8200
+          CidrIp: 0.0.0.0/0
+  TransferNVIG:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: TRANSFER-NVIRGINIA-IGW
+  AttachGatewayTransferNVIG:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref TransferNVVPC
+      InternetGatewayId: !Ref TransferNVIG
+  TransferNVVPCRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref TransferNVVPC
+  TransferNVVPCRouteIG:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref TransferNVVPCRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref TransferNVIG
+  TransferNVSN1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref TransferNVVPC
+      CidrBlock: 172.60.0.128/28
+      AvailabilityZone: us-east-1d
+      Tags:
+        - Key: Name
+          Value: TRANSFER-NVIRGINIA-SN1
+  TransferNVSN2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref TransferNVVPC
+      CidrBlock: 172.60.0.144/28
+      AvailabilityZone: us-east-1e
+      Tags:
+        - Key: Name
+          Value: TRANSFER-NVIRGINIA-SN2
+  STTransferEIP1:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: STTRANSFERTEST-NVIRGINIA-EIP1
+  STTransferEIP2:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: STTRANSFERTEST-NVIRGINIA-EIP2
+  STTransferTEST:
+    Type: 'AWS::Transfer::Server'
+    Properties:
+      Protocols:
+        - SFTP
+        - FTPS
+      EndpointType: VPC
+      EndpointDetails:
+        AddressAllocationIds:
+          - Ref: STTransferEIP1
+          - Ref: STTransferEIP2
+        VpcId:
+          - Ref: TransferNVVPC
+        SubnetIds:
+          - Ref: TransferNVSN1
+          - Ref: TransferNVSN2
+      IdentityProviderType: API_GATEWAY
+      IdentityProviderDetails:
+        Url: !Ref CustomIdProviderApiUrl
+        InvocationRole: prod-sftpTransferIdentityProvider
+      LoggingRole: sftp-cloudwatch-logs-role
+      SecurityPolicy: TransferSecurityPolicy-2020-06
+    DependsOn:
+      - AttachGatewayTransferNVIG
+  STTransferTESTDNS:
+    Type: 'AWS::Route53::RecordSet'
+    Properties:
+      Name: !Ref TransferHostName
+      HostedZoneId: !Ref HostedZoneId
+      Type: CNAME
+      Comment: Transfer custom hostname
+      TTL: 300
+      ResourceRecords:
+        - !Sub '${STTransferTEST.ServerId}.server.transfer.${AWS::Region}.amazonaws.com'
