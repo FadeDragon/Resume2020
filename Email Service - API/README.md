@@ -21,7 +21,7 @@ Hence the idea to split off the emailing sub-system into its own project while a
 
 ### steps
 Diagram for AWS resources
-![Diagram for AWS resources](EmailService - Architecture Diagram.svg)
+![Diagram](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/EmailService%20-%20Architecture%20Diagram.svg)
 
 Diagram for API
 
