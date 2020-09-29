@@ -13,7 +13,7 @@ namespace Diagnostics.Jobs
     ///
     ///   If a service is not Running, this job will attempt to restart it every 5 minutes.
     ///
-    ///   After 10 minutes, a message will be sent to a slack channel defined in the web hook.
+    ///   After 20 minutes, a message will be sent to a slack channel defined in the web hook.
     /// </summary>
     public class ServicesCheckJob : IJob
     {
@@ -22,7 +22,7 @@ namespace Diagnostics.Jobs
         private static readonly string EnvironmentName = ConfigurationManager.AppSettings["Environment"];
 
         // all times in minutes
-        private static readonly int TimeBeforeNotification = 10;
+        private static readonly int TimeBeforeNotification = 20;
         private static readonly int TimeBeforeRestartAttempt = 5;
 
         public ServicesCheckJob(ISlackMessageSender slackSender)
