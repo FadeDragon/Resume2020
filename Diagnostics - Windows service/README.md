@@ -19,7 +19,7 @@ Ensure service outages and risks to the business is reduced to the minimum. From
 
 A simple windows service which checks these other services has been created and to automatically raise alerts to Slack channels.
 
-## Jobs
+## Required jobs
 ### ServicesCheckJob
 Regularly checks all needed services are running.
 
@@ -27,14 +27,15 @@ Regularly checks all needed services are running.
 1. Go through the list and determine if a service is running
 1. Attempt to restart non-runnning services first
 1. By 10 minutes, a non-running service that did not manage to restart must be alerted to a Slack channel
-  1. double check that alerts are not sent multiple sometimes
+
+*double check that the same alerts are not sent multiple times
 
 ### ServicesMetricsJob
-Regularly raises performance metrics to cloud watch.
+Regularly raises performance metrics to cloud watch for visibility to support team.
 
 1. Have a list of services to check
 1. Go through the list and determine CPU and memory usage
-1. Upload to cloud watch, for naming convention of logs use 'MemoryCPUServicesUsage/<process name>' 
+1. Put metric data to cloud watch, for naming convention of logs please use 'MemoryCPUServicesUsage/<process name>' 
 
 # Next steps
 Configure cloud watch alarms for the MemoryCPUServicesUsage related logs
