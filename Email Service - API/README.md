@@ -14,12 +14,12 @@ These emails are sent via calling third party libraries within the same Web Appl
 
 A common issue exists with certain parties claiming that they received no email or the email was never sent to their system and it is time consuming to trace these changes and prove when these emails were sent.
 
-## Overview of proposal
+# Overview of proposal
 From the business' point of view, the requirement is to improve the reliability of emails in the main product. From the development point of view, having to fix bugs and rebuild the application adds unneccessary delays to the development cycle.
 
 Hence the idea to split off the emailing sub-system into its own project while addressing these concerns was started.
 
-### Diagrams
+## Diagrams
 Diagram for AWS resources
 
 ![AWS resources](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/EmailService%20-%20Architecture%20Diagram.svg)
@@ -28,9 +28,9 @@ Diagram for API
 
 ![API](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/EmailService%20-%20API%20Diagram.svg)
 
-### Usage proposal.
+## Usage proposal.
 
-POST - /send
+### POST - /send
 Accepts a request to create an email, should contain the following
 
 * Application Id - Identify which product and brand is sending this request.
@@ -55,7 +55,7 @@ Upon successful validation, insert the request into [notification_request] table
 1. Put a message into SQS queue with GuID in payload
 1. Return the GuID in the response
 
-GET - /check/{id:guid}
+### GET - /check/{id:guid}
 Accepts a GuID created in another /send call and looks for information of the email request. Should return the following
 
 * Status - Currently if it is queued, has error or completed
@@ -64,6 +64,6 @@ Accepts a GuID created in another /send call and looks for information of the em
 
 ## Next steps.
 
-Coordinate with development and support teams to migrate old data into the new service and retire the previous emailer function.
+Coordinate with development and support teams to migrate old data into the new service and deprecate usages of previous emailer function.
 
 
