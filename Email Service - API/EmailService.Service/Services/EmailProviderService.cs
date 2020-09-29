@@ -20,7 +20,8 @@ namespace EmailService.Service.Services
             this.simpleEmailServiceProvider = simpleEmailServiceProvider;
         }
 
-        public async ValueTask<Provider> GetEmailProviderAsync()
+        //public async ValueTask<Provider> GetEmailProviderAsync()
+        public Provider GetEmailProviderAsync()
         {
             /*var provider = await pgDataClient.FirstOrDefault<Provider>(new GetEmailProviderQuery());
 

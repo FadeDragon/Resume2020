@@ -16,6 +16,8 @@ using EmailService.Core;
 using EmailService.Core.Data;
 using EmailService.Core.Queue;
 using EmailService.Service.Services;
+using EmailService.Service.Templating;
+
 //using EmailService.Service.Templating;
 //using SendGrid;
 
@@ -57,17 +59,20 @@ namespace EmailService.Service
 
         private async Task ProcessMessageAsync(IEnumerable<SQSEvent.SQSMessage> messages, ILambdaContext context)
         {
-            context.Logger.LogLine($"Processed {messages.Count()} messages");
+            var sqsMessages = messages.ToList();
+            context.Logger.LogLine($"Processed {sqsMessages.Count} messages");
 
-            try
+            foreach (var message in sqsMessages)
             {
-                var message = messages.First().Body;
-                await serviceProvider.GetService<EmailServiceProcessor>().Handle(message, context);
-            }
-            catch (Exception exception)
-            {
-                context.Logger.LogLine(exception.Message);
-                throw;
+                try
+                {
+                    await serviceProvider.GetService<EmailServiceProcessor>().Handle(message.Body, context);
+                }
+                catch (Exception exception)
+                {
+                    context.Logger.LogLine(exception.Message);
+                    throw;
+                }
             }
 
             await Task.CompletedTask;
@@ -78,7 +83,7 @@ namespace EmailService.Service
             var configuration = GetConfiguration();
             serviceCollection.AddSingleton(x => configuration);
 
-            //Initialize static class
+            // initialize appsettings
             Config.Init(configuration);
 
             if (Config.IsLocal)
@@ -91,12 +96,11 @@ namespace EmailService.Service
                 serviceCollection.AddSingleton<IAmazonSQS>(q => queueService);
                 serviceCollection.AddSingleton<IQueueService, AwsQueueService>();
             }
-            
 
             serviceCollection.AddTransient<IPgDataClient, PostgreSQLDataClient>();
-            /*serviceCollection.AddTransient<ITemplateEngine, TemplateEngine>();
+            serviceCollection.AddTransient<ITemplateEngine, TemplateEngine>();
 
-            serviceCollection.AddSingleton<ISendGridClient>(x => new SendGridClient(Config.SendGridApiKey));
+            /*serviceCollection.AddSingleton<ISendGridClient>(x => new SendGridClient(Config.SendGridApiKey));
             serviceCollection.AddTransient<SendGridProvider>();*/
 
             var amazonNotificationServiceClient = new AmazonSimpleEmailServiceClient(RegionEndpoint.GetBySystemName(Config.AwsRegionEndpoint));

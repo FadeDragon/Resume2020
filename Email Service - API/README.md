@@ -28,6 +28,15 @@ Diagram for API
 
 ![API](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/EmailService%20-%20API%20Diagram.svg)
 
+Flow for EmailService.Service
+
+![Flow](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/EmailService%20-%20Processor%20Flow%20Diagram.svg)
+
+* Getting email providers allow the service to be able to use alternative providers in case of availability issues identified in Save email status step
+* Email templates is a requirement to support different products for different markets and languages
+* Rendering data into templates via templating engine is a requirement to enable emails to be used as notifications
+* Save email status provides easy tracing of emails that were sent (or not sent out) and ease of troubleshooting
+
 ## Usage proposal.
 
 ### POST - /send

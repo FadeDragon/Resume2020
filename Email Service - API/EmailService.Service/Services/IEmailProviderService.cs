@@ -5,6 +5,7 @@ namespace EmailService.Service.Services
 {
     public interface IEmailProviderService
     {
-        ValueTask<Provider> GetEmailProviderAsync();
+        //ValueTask<Provider> GetEmailProviderAsync();
+        Provider GetEmailProviderAsync();
     }
 }
