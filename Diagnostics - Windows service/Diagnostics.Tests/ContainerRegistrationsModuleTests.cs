@@ -8,6 +8,9 @@ using NUnit.Framework;
 
 namespace Diagnostics.Tests
 {
+    /// <summary>
+    ///   To warn and remind developers to register any newly created dependencies
+    /// </summary>
     [TestFixture]
     public class ContainerRegistrationsModuleTests
     {

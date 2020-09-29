@@ -7,7 +7,9 @@ using Diagnostics.Jobs;
 namespace Diagnostics.Service
 {
     /// <summary>
-    ///   The single service that TopShelf will run
+    ///   The single service that TopShelf will run.
+    ///
+    ///   Uses Autofac for IoC dependency injection, and Fluent Scheduler to execute jobs at regular intervals
     /// </summary>
     [ExcludeFromCodeCoverage]
     public class DiagnosticsServices
@@ -27,7 +29,8 @@ namespace Diagnostics.Service
 
             JobManager.JobException += info =>
             {
-                if (ExceptionTracker.ContainsKey(info.Name) && ExceptionTracker.TryGetValue(info.Name, out var counter) && counter > ExceptionLimitPerJob)
+                if (ExceptionTracker.ContainsKey(info.Name) && 
+                    ExceptionTracker.TryGetValue(info.Name, out var counter) && counter > ExceptionLimitPerJob)
                 {
                     // 10 exceptions raised for a job, let's stop it, and raise it to slack
                     JobManager.RemoveJob(info.Name);
@@ -38,6 +41,7 @@ namespace Diagnostics.Service
                 }
             };
 
+            // register diagnostic jobs
             JobManager.Initialize(new JobRegistry());
         }
 

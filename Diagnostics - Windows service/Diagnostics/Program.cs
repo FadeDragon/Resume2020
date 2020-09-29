@@ -4,6 +4,9 @@ using Topshelf;
 
 namespace Diagnostics.Service
 {
+    /// <summary>
+    ///   Uses TopShelf to host the Diagnostics Service as a windows service
+    /// </summary>
     [ExcludeFromCodeCoverage]
     class Program
     {

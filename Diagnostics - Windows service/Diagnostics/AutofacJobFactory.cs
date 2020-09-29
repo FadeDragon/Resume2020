@@ -5,7 +5,7 @@ using FluentScheduler;
 namespace Diagnostics.Service
 {
     /// <summary>
-    /// Implementation of Autofac Factory for FluentScheduler to resolve dependencies
+    ///   Implementation of Autofac Factory for FluentScheduler to resolve dependencies
     /// </summary>
     [ExcludeFromCodeCoverage]
     public class AutofacJobFactory : IJobFactory

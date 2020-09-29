@@ -11,23 +11,28 @@ using FluentScheduler;
 
 namespace Diagnostics.Jobs
 {
+    /// <summary>
+    ///   Sends memory and cpu usage of each process to CloudWatch.
+    ///
+    ///   A basic AWS Api account should be used for sending these metrics.
+    /// </summary>
     public class ServicesMetricsJob : IJob
     {
-        private readonly string instanceId;
-        private readonly string instanceName;
+        private readonly string InstanceId;
+        private readonly string InstanceName;
         private readonly List<Dimension> MetricDatumDimensions;
 
         public ServicesMetricsJob()
         {
-            instanceName = Environment.MachineName;
+            InstanceName = Environment.MachineName;
 
             try
             {
-                instanceId = EC2InstanceMetadata.InstanceId;
+                InstanceId = EC2InstanceMetadata.InstanceId;
             }
             catch
             {
-                instanceId = Environment.MachineName;
+                InstanceId = Environment.MachineName;
             }
 
             MetricDatumDimensions = new List<Dimension>
@@ -35,21 +40,22 @@ namespace Diagnostics.Jobs
                 new Dimension
                 {
                     Name = "InstanceID",
-                    Value = instanceId
+                    Value = InstanceId
                 },
                 new Dimension
                 {
                     Name = "Instance Name",
-                    Value = instanceName
+                    Value = InstanceName
                 }
             };
         }
 
         public void Execute()
         {
+            // check only services from "company name" and a certain subsidiary
             var processes = Process.GetProcesses()
                                    .Where(x => x.ProcessName.ToLower().Contains("company product") ||
-                                               x.ProcessName.ToLower().Contains("subsidiary project 1"))
+                                                      x.ProcessName.ToLower().Contains("subsidiary project 1"))
                                    .ToList();
 
             var awsCreds = new BasicAWSCredentials("", "");
@@ -63,8 +69,8 @@ namespace Diagnostics.Jobs
 
         private void PutPerformanceMetricDataForProcess(AmazonCloudWatchClient client, Process process)
         {
-            double memoryUsage = 0.0;
-            float cpuUsage = 0.0f;
+            var memoryUsage = 0.0;
+            var cpuUsage = 0.0f;
 
             using (process)
             {
@@ -75,7 +81,7 @@ namespace Diagnostics.Jobs
 
             client.PutMetricData(new PutMetricDataRequest
             {
-                Namespace = $"CustomAggregateInstanceUsage/{process.ProcessName}",
+                Namespace = $"MemoryCPUServicesUsage/{process.ProcessName}",
                 MetricData = new List<MetricDatum>
                 {
                     new MetricDatum

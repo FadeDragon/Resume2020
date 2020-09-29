@@ -8,22 +8,31 @@ using Diagnostics.Jobs.SlackMessageSender;
 
 namespace Diagnostics.Jobs
 {
+    /// <summary>
+    ///   Checks that services with "company name" in the service name are running.
+    ///
+    ///   If a service is not Running, this job will attempt to restart it every 5 minutes.
+    ///
+    ///   After 10 minutes, a message will be sent to a slack channel defined in the web hook.
+    /// </summary>
     public class ServicesCheckJob : IJob
     {
         private static readonly ConcurrentDictionary<string, ServiceState> State = new ConcurrentDictionary<string, ServiceState>();
-        private readonly ISlackMessageSender slackSender;
+        private readonly ISlackMessageSender SlackSender;
         private static readonly string EnvironmentName = ConfigurationManager.AppSettings["Environment"];
 
-        private static readonly int TimeBeforeNotification = 10; // 10 minutes
-        private static readonly int TimeBeforeRestartAttempt = 5; // 5 minutes
+        // all times in minutes
+        private static readonly int TimeBeforeNotification = 10;
+        private static readonly int TimeBeforeRestartAttempt = 5;
 
         public ServicesCheckJob(ISlackMessageSender slackSender)
         {
-            this.slackSender = slackSender;
+            SlackSender = slackSender;
         }
 
         public void Execute()
         {
+            // check only services from "company name", and skip checking all diagnostics related services
             var services = ServiceController.GetServices()
                                             .Where(x => x.ServiceName.ToLower().Contains("company name"))
                                             .Where(x => !x.ServiceName.ToLower().Contains("diagnostics"))
@@ -32,43 +41,44 @@ namespace Diagnostics.Jobs
             foreach (var service in services)
             {
                 var serviceState = State.GetOrAdd(service.ServiceName, x => new ServiceState(x));
-
                 if (service.Status == ServiceControllerStatus.Running)
                 {
                     serviceState.Clear();
 
                     continue;
                 }
-
+                
+                // reaching this section means the service is not running
                 serviceState.MarkAsDown();
 
                 switch (serviceState.IsDownForTooLong())
                 {
                     case ServiceStateReaction.DownButAttemptToRestart:
                         {
-                            TryRestart(service);
-                            serviceState.RestartAttempted();
+                            // attempt a restart and increment the restart count
+                            TryRestart(service, serviceState);
                             break;
                         }
                     case ServiceStateReaction.RestartFailedTooManyTimesRaiseAlert:
                         {
                             if (!serviceState.NotificationHasBeenSent)
                             {
+                                // send alert notification and set NotificationHasBeenSent=true
                                 SendAlert(serviceState);
-                                serviceState.NotificationRaised();
                             }
                             break;
                         }
+                    // case ServiceStateReaction.AcceptableDuration:
+                    // Down but within acceptable duration
                     default:
                         {
-                            // Down but not long enough, still acceptable
                             continue;
                         }
                 }
             }
         }
 
-        void TryRestart(ServiceController service)
+        static void TryRestart(ServiceController service, ServiceState serviceState)
         {
             try
             {
@@ -76,30 +86,33 @@ namespace Diagnostics.Jobs
             }
             catch
             {
-                // Ignore - next iteration will try again and after 10 minutes notify us.
+                // ignore - will try again soon and alerts will eventually be raised.
             }
+            serviceState.RestartAttempted();
         }
 
-        void SendAlert(ServiceState serviceState)
+        private void SendAlert(ServiceState serviceState)
         {
-            // Send notification slack channel to alert team
+            // send notification into slack channel to alert team
             var message = $@"
 [Diagnostics - {EnvironmentName}] Windows Service {serviceState.DisplayName} is down!
 
-It was first noticed to be down at {serviceState.FirstDown:D} UTC and has failed to be restarted {serviceState.RestartCount} time{(serviceState.RestartCount == 1 ? "" : "s")}.
+Detected to be down at {serviceState.FirstDown:D} UTC and has failed to be restarted {serviceState.RestartCount} time{(serviceState.RestartCount == 1 ? "" : "s")}.
 ";
 
-            slackSender.Send(message);
+            SlackSender.Send(message);
+            
+            serviceState.NotificationRaised();
         }
 
-        public enum ServiceStateReaction
+        private enum ServiceStateReaction
         {
             DownButAttemptToRestart,
             RestartFailedTooManyTimesRaiseAlert,
             AcceptableDuration
         }
 
-        public class ServiceState
+        private class ServiceState
         {
             public ServiceState(string displayName)
             {
