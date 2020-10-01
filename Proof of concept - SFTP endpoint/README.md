@@ -23,10 +23,14 @@ Diagram for AWS resources
 
 ![AWS resources](https://github.com/FadeDragon/Resume2020/blob/master/Proof%20of%20concept%20-%20SFTP%20endpoint/ftp%20resources.svg)
 
-### steps
+### Detailed steps of proposal
 Discussion with stakeholders over deciding on a build-or-buy solution for the requirement.
 
 Formal proposal with working proof of concept.
+* Use the following link to setup a password enabled SFTP instance
+* https://aws.amazon.com/blogs/storage/enable-password-authentication-for-aws-transfer-for-sftp-using-aws-secrets-manager/
+* Requirements from management is to use cognito instead of secrets manager to store user login details
+
 
 Coordinate with product, development and support teams to allow said client to switch to SFTP while ensuring other clients carry on with FTP.
 

@@ -24,11 +24,11 @@ Diagram for AWS resources
 
 ![AWS resources](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/EmailService%20-%20Architecture%20Diagram.svg)
 
-Diagram for API
+Diagram for request processing in EmailService.API
 
 ![API](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/EmailService%20-%20API%20Diagram.svg)
 
-Flow for EmailService.Service
+Flow of logic for EmailService.Service
 
 ![Flow](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/EmailService%20-%20Processor%20Flow%20Diagram.svg)
 
