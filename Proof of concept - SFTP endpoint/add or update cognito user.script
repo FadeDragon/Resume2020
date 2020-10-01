@@ -1,0 +1,7 @@
+aws cognito-idp admin-create-user --user-pool-id <CognitoUserPoolId> --username db-RelayHubSftpUser --user-attributes '[{"Name": "custom:Role","Value": "arn:aws:iam::12345:role/Sftp-Dev-Role"},{"Name": "custom:HomeDirectoryDetails","Value":"[{"Entry": "/Uploads", "Target": "/s3bucket-123abc/Uploads"}]"},{"Name":"custom:PublicKey","Value":"ssh-rsa ***== rsa-key-"}]' 
+
+aws cognito-idp admin-set-user-password --user-pool-id <CognitoUserPoolId> --username <userName> --password <password> --permanent
+
+aws cognito-idp admin-update-user-attributes --user-pool-id <PoolId> --username <userName> --user-attributes Name="custom:Role",Value="arn:aws:iam::12345:role/Sftp-Dev-Role"
+
+aws cognito-idp admin-delete-user --user-pool-id <CognitoUserPoolId> --username demo-sftp-user
