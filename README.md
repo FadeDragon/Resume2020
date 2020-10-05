@@ -1,10 +1,11 @@
 # Resume2020
 Portfolio repository to complement my resume.
 
-Any work shown here can be used to help anyone in their work :)
+Thanks for having a look.
+
+Although the stuff here is really basic, any work shown here can be used to help anyone if they found it useful :)
 
 Please note that sensitive data have been zero'ed out, and references to my company's software artifacts + core business logic have been removed.
 
-Hence the projects here cannot execute properly without some changes.
+Hence the projects here cannot execute properly without some changes. Please understand.
 
-Thanks for having a look and for your kind understanding.
