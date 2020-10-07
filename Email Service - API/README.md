@@ -14,10 +14,12 @@ These emails are sent via calling third party libraries within the same Web Appl
 
 A common issue exists with certain parties claiming that they received no email or the email was never sent to their system and it is time consuming to trace these changes and prove when these emails were sent.
 
+Hence the idea to split off the emailing sub-system into its own project while addressing these concerns was started.
+
 # Overview of proposal
 From the business' point of view, the requirement is to improve the reliability of emails in the main product. From the development point of view, having to fix bugs and rebuild the application adds unneccessary delays to the development cycle.
 
-Hence the idea to split off the emailing sub-system into its own project while addressing these concerns was started.
+Hence a new system was to address these issues, making use of AWS services.
 
 ## Diagrams
 Diagram for AWS resources
