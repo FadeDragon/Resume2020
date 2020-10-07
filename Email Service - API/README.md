@@ -19,7 +19,7 @@ Hence the idea to split off the emailing sub-system into its own project while a
 # Overview of proposal
 From the business' point of view, the requirement is to improve the reliability of emails in the main product. From the development point of view, having to fix bugs and rebuild the application adds unneccessary delays to the development cycle.
 
-Hence a new system was to address these issues, making use of AWS services.
+Making use of AWS services, the new system is as follows.
 
 ## Diagrams
 Diagram for AWS resources
@@ -77,4 +77,4 @@ Accepts a GuID created in another /send call and looks for information of the em
 
 Coordinate with development and support teams to migrate old data into the new service and deprecate usages of previous emailer function.
 
-
+A timeframe of a few weeks (at least one month, to be safe) will be expected, as certain clients in some markets have plenty of Notification Types that need to be migrated to this system.
