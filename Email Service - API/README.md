@@ -18,9 +18,11 @@ A few attempts to improve the emailing functions in the past has not decreased t
 # Overview of proposal
 
 ## Idea from the team
-From the business' point of view, the requirement is to improve the reliability of emails in the main product. From the development point of view, having to fix bugs and rebuild the application adds unneccessary delays to the development cycle of the application.
+The requirement as viewed from different teams.
+* From the business' point of view : improve the reliability of emails
+* From the development point of view : having to fix bugs and rebuild the application adds unneccessary delays to our work
 
-An idea was given, by the architect team, to split off the emailing sub-system into its own project and make use of AWS services.
+An idea was given, by the architect team, to split off the emailing sub-system into its own project and make use of AWS services for better reliability.
 
 ## Discussion
 We identified that the new system needs to immediately address the following : allow customer support teams to easily respond to cases of emails not being received; run as a separate service from the application; and handle the same volume of email requests as the current emailer system.
