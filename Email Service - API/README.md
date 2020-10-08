@@ -1,25 +1,33 @@
 # Contents
-- Diagrams and a high level proposal of the system design
+* High level proposal of a system design with diagrams
 
-- Lambda for API gateway used
+* Lambda for API gateway proxy
 
-- Lambda for SQS message processing
+* Lambda to process SQS message and send emails
 
-# API - A new Lambda-based emailer
-Orders from clients need to email certain parties to notify them to approve and/or take action at certain intervals. This service provides a highly performant, scalable and cost effective system while allowing easy tracing of email sending statuses.
+# An emailer - API Gateway using lambda proxy
+Orders from clients need to email certain parties to notify them of requests for action and/or approvals at certain intervals. This service provides a highly performant, secure and cost effective system while allowing easy tracing of email that were sent out.
 
 ## Currently
+These emails are sent via third party libraries integrated into the same Web Application for handling orders.
 
-These emails are sent via calling third party libraries within the same Web Application added years ago. It has tight coupling with data structures and workflows in the application, with small changes sometimes breaking entire builds or breaking the emailer.
+The logic is tightly coupled with data structures and workflows from the application, with small changes sometimes breaking entire builds or breaking the emailer. A common operational issue is that certain parties claim they did not receive the emails they were expecting. This translates into risks for the business.
 
-A common issue exists with certain parties claiming that they received no email or the email was never sent to their system and it is time consuming to trace these changes and prove when these emails were sent.
-
-Hence the idea to split off the emailing sub-system into its own project while addressing these concerns was started.
+A few attempts to improve the emailing functions in the past has not decreased the amount of complaints. This has prompted management to review this system and request for a solution.
 
 # Overview of proposal
-From the business' point of view, the requirement is to improve the reliability of emails in the main product. From the development point of view, having to fix bugs and rebuild the application adds unneccessary delays to the development cycle.
 
-Making use of AWS services, the new system is as follows.
+## Idea from the team
+From the business' point of view, the requirement is to improve the reliability of emails in the main product. From the development point of view, having to fix bugs and rebuild the application adds unneccessary delays to the development cycle of the application.
+
+An idea was given, by the architect team, to split off the emailing sub-system into its own project and make use of AWS services.
+
+## Discussion
+We identified that the new system needs to immediately address the following : allow customer support teams to easily respond to cases of emails not being received; run as a separate service from the application; and handle the same volume of email requests as the current emailer system.
+
+Although not stated in any communications, it is also expected that concerns of security and the costs of running this system will determine if it gets all the approvals needed to push it for production use.
+
+To describe the proposed system, pictures have been drawn up and submitted with the proposal.
 
 ## Diagrams
 Diagram for AWS resources
@@ -34,10 +42,17 @@ Flow of logic for EmailService.Service
 
 ![Flow](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/EmailService%20-%20Processor%20Flow%20Diagram.svg)
 
-* Getting email providers allow the service to be able to use alternative providers in case of availability issues identified in Save email status step
-* Email templates is a requirement to support different products for different markets and languages
-* Rendering data into templates via templating engine is a requirement to enable emails to be used as notifications
-* Save email status provides easy tracing of emails that were sent (or not sent out) and ease of troubleshooting
+* Lambdas are used to keep up with traffic volume and achieve cost-savings when usage is low.
+* Private VPC to keep the database safe from the public internet.
+  * Lambda receives message from the SQS via VPC endpoint.
+  * Lambda runs in the VPC to access the database.
+  * Execution time is less of a concern as most emails are not seen as time sensitive.
+* The email providers functionality allows the service to use alternative providers in case of availability issues identified during the 'Save email status' step.
+  * Original project has support for AWS SES and SendGrid.
+* Usage of SQS gives potential for future expansion to couple the email service with other lambda-based microservices.
+* Email templates is an existing feature of the current emailer so as to support different products for different markets and clients.
+* Rendering data into templates via a templating engine enables emails to provide details without customers having to log in.
+* 'Save email status' provides easy tracing of emails that were sent (or not sent out) and ease of tracing.
 
 ## Usage proposal.
 
