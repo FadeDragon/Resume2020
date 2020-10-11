@@ -14,7 +14,7 @@ The goal is to get it up and running to make use of AppConfig to roll out config
 1. Set up the code in AWS account, with AppConfig
 2. Try changing configurations and see the output
 
-![Output](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/Playing%20with%20appconfig)
+![Output](https://github.com/FadeDragon/Resume2020/blob/master/Email%20Service%20-%20API/Playing%20with%20appconfig.jpg
 
 # Conclusion
 Because a function now fetches configuration data faster using a local call rather than over the network by using the AWS AppConfig extension, this translates into cost savings by shortening execution time of lambdas.
