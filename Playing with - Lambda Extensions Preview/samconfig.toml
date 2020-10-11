@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "awsappconfig-extension-demo"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1f3td44elkpk9"
+s3_prefix = "awsappconfig-extension-demo"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "AppConfigARN=\"arn:aws:lambda:us-east-1:027255383542:layer:AWS-AppConfig-Extension:1\" AppConfigProfile=\"DemoExtensionApplication/Production/LoggingLevel/LogLevel\""
