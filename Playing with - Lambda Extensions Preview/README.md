@@ -13,8 +13,7 @@ The goal is to get it up and running to make use of AppConfig to roll out config
 ## Steps
 1. Set up the code in AWS account, with AppConfig
 
-![Original]
-(https://github.com/FadeDragon/Resume2020/blob/master/Playing%20with%20-%20Lambda%20Extensions%20Preview/Playing%20with%20extensions.jpg)
+![Original](https://github.com/FadeDragon/Resume2020/blob/master/Playing%20with%20-%20Lambda%20Extensions%20Preview/Playing%20with%20extensions.jpg)
 
 2. Try changing configurations and see the output
 
