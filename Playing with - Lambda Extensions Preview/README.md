@@ -3,7 +3,7 @@ An easy way to integrate monitoring tools into lambdas was announced on the comp
 
 https://aws.amazon.com/blogs/compute/introducing-aws-lambda-extensions-in-preview/
 
-This portfolio entry shows a tryout of the preview and seeing it in action
+This portfolio entry shows a tryout of the preview, using AppConfig from the example and then seeing the performance difference.
 
 # Overview
 Using the repo at https://github.com/aws-samples/aws-lambda-extensions/tree/main/awsappconfig-extension-demo
