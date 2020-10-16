@@ -42,7 +42,7 @@ The time and cost savings can be significant if there are many more calls to mul
 
 ## Next Steps
 
-The importance of extensions is the ability to write custom tools using the extensions API.
+The significance of lambda extensions is the ability to write custom tools using the extensions API.
 
 https://aws.amazon.com/blogs/compute/building-extensions-for-aws-lambda-in-preview/
 
