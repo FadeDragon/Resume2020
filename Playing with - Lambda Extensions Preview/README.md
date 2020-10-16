@@ -38,7 +38,7 @@ There is an improvement of 0.1 seconds, not much of time saved by switching to u
 
 There is an improvement of 0.15 seconds this time. 
 
-The time and cost savings can be significant if there are many more calls to multiple appconfig.getConfiguration() in real world lambdas.
+The time and cost savings can be significant if there are many more calls to multiple appconfig.getConfiguration() in real world lambdas. Switching such lambdas to use extensions should be well worth the effort!
 
 ## Next Steps
 
