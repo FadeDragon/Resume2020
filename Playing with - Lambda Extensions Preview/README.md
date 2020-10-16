@@ -8,20 +8,35 @@ This portfolio entry shows a tryout of the preview and seeing it in action
 # Overview
 Using the repo at https://github.com/aws-samples/aws-lambda-extensions/tree/main/awsappconfig-extension-demo
 
-The goal is to get it up and running to make use of AppConfig to roll out configuration changes into the demo lambda
+The goal is to get it up and running making use of AppConfig in two ways
+- Retrieve configuration with the current, SDK way
+- Retrieve configuration with the new extensions way
+
+Will there be any cost savings? Let's find out!
 
 ## Steps
-1. Set up the code in AWS account, with AppConfig
-
-![Original](https://github.com/FadeDragon/Resume2020/blob/master/Playing%20with%20-%20Lambda%20Extensions%20Preview/Playing%20with%20extensions.jpg)
-
-2. Try changing configurations and see the output
+1. Set up the code in AWS account, with AppConfig. See the output
 
 ![Output](https://github.com/FadeDragon/Resume2020/blob/master/Playing%20with%20-%20Lambda%20Extensions%20Preview/Playing%20with%20appconfig.jpg)
 
+2. Get configurations with the current way, and the extensions way. Twice for each method.
+
+Can't wait to check cloudwatch for the results!
+
+![Results](https://github.com/FadeDragon/Resume2020/blob/master/Playing%20with%20-%20Lambda%20Extensions%20Preview/Playing%20with%20extensions-results.jpg)
+
 # Conclusion
-The function ran for about 1.296 seconds with AppConfigs as extension by observing timestamps in cloud watch.
+The function ran for about:
 
-TODO - Make the same function but without using extensions. Check the execution time the function needed to run.
+1. AppConfig without extensions, called twice, total of 1.241 seconds 
+1. AppConfig with extensions, called twice, total of 1.200 seconds 
 
-Because a function now fetches configuration data faster using a local call rather than over the network by using the AWS AppConfig extension, this translates into cost savings by shortening execution time of lambdas.
+There is an improvement of 0.041 seconds, not much of time saved by switching to usage of extensions. But it can be significant if there are many more calls to multiple appconfig.getConfiguration() in real world lambdas.
+
+## Next Steps
+
+The importance of extensions is the ability to write custom tools using the extensions API.
+
+https://aws.amazon.com/blogs/compute/building-extensions-for-aws-lambda-in-preview/
+
+Lambda extensions with third party tools will make work easier as we integrate with some of them.
