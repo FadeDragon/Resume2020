@@ -29,28 +29,28 @@ How it matches the example of insurance company
 ## Usage proposal.
 
 ### createPolicy
-A customer buying an insurance policy. The UI calls this to store the new policy.
+A customer buying an insurance policy. Returns an action object that stores the new policy.
 
 * name - Identifies the customer.
 * amount - The money to purchase the policy.
 
-Upon reaching the reducers, the state will have the new policy included.
+After passing through the reducers, the state will include the new policy.
 
 ### deletePolicy
-A customer terminating or withdraws their policy. The UI calls this to remove the policy.
+A customer terminating or withdraws their policy. Returns an action object that deletes policy.
 
 * name - Identifies the customer.
 
 ### createClaim
-A customer has something bad happen to them. The UI calls this to payout to the customer.
+A customer has something bad happen to them. Returns an action object that payouts to the customer.
 
 * name - Identifies the customer.
 * amountOfMoneyToCollect - The amount of money to claim.
 
-Upon reaching the reducers, the state will have the amount of money deducted and a new entry added to claims history.
+Upon reaching the reducers, the amount of money is deducted from the balance and a new entry added to claims history.
 
 ## Next steps.
 
 With Redux managing the state, we make use of React hooks to implement Redux in a React application.
 
-Multiple components can now share state using Redux and reducers ensure future code changes can modify the state of the application via reducers.
+Multiple components can now share application state using Redux. Reducers ensure future code changes modify the state of the application via specific actions.
